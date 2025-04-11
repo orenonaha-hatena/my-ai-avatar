@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AIアバター喋るだけ版</title>
+  <style>
+    body { text-align: center; font-family: sans-serif; margin-top: 50px; }
+    #avatar { width: 200px; }
+    #talking { display: none; }
+  </style>
+</head>
+<body>
+  <h1>AIアバター（iPad用）</h1>
+  <img id="idle" src="avatar/idle.png" alt="アバター" />
+  <img id="talking" src="avatar/talking.gif" alt="話してるアバター" />
+
+  <br><br>
+  <input type="text" id="text" placeholder="ここに話す内容を入力" size="40">
+  <button onclick="speak()">喋らせる</button>
+
+  <script>
+    function speak() {
+      const text = document.getElementById("text").value;
+      if (!text) return;
+
+      // アバター切り替え
+      document.getElementById("idle").style.display = "none";
+      document.getElementById("talking").style.display = "inline";
+
+      // 音声合成
+      const uttr = new SpeechSynthesisUtterance(text);
+      uttr.lang = 'ja-JP';
+      uttr.rate = 1.0;
+
+      uttr.onend = () => {
+        // アバターを元に戻す
+        document.getElementById("idle").style.display = "inline";
+        document.getElementById("talking").style.display = "none";
+      };
+
+      speechSynthesis.speak(uttr);
+    }
+  </script>
+</body>
+</html>
